@@ -1,4 +1,5 @@
 import streamlit as st
+from functions import ask_chatgpt
 
 st.title('あなたへのおすすめ')
 st.write('作品を入力するとそれに基づいた他作品の紹介を行います')
@@ -16,3 +17,7 @@ with st.form(key='recommend_form'):
         works = [work1, work2, work3]
         for i, work in enumerate(works):
             st.text(f'あなたの好きな作品{i+1}：『{work}』')
+        
+        recommendation = ask_chatgpt(works)
+        for i, work in enumerate(recommendation):
+            st.text(f'あなたにおすすめの作品{i+1}：『{work}』')
