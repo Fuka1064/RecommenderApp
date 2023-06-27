@@ -1,0 +1,6 @@
+# .gitignore
+
+# ビルドフォルダやキャッシュファイルなどを除外する
+_build/
+_pycache_/
+*.pyc
