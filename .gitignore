@@ -5,4 +5,4 @@ _build/
 _pycache_/
 *.pyc
 test.py
-secret.py
+.env
