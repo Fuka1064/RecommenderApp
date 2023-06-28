@@ -1,7 +1,8 @@
+import openai
 import os
 from dotenv import load_dotenv
 load_dotenv('.env') 
-API_KEY = os.environ.get("API_KEY")
+openai.api_key = os.environ.get("API_KEY")
 
 genre_to_eng = {'アニメ':'anime', 
                 '漫画':'comic', 
@@ -25,26 +26,20 @@ def make_question(genre, works):
 
 def ask_chatgpt(question):
     # 引数として受け取った質問をChatGPTに投げてその返答を返す
-    answer = """【共通点】
-(1) シュール: 奇妙な場所や出来事が描かれたりします。
 
-(2) 異世界的: 現実とは異なる異世界的な要素を含んでいます。
+    answer = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "user",
+                "content": question
+            },
+        ],
+    )
 
-(3) 対比: 過酷な状況や困難な試練に直面することもあります。
+    return answer["choices"][0]["message"]["content"]
 
-【おすすめのアニメ】
-(1) 『ブラック』
-おすすめの理由: 医療の現場でのドラマや人間模様が描かれています。
-
-(2) 『少女革命』
-おすすめの理由: 哲学的なストーリーが特徴です。
-
-(3) 『ハウル』
-おすすめの理由: スタジオジブリの作品である。"""
-
-    return answer
-
-def answer_to_list(answer):
+def answer_to_list(genre, answer):
     # 空のリストを初期化
     similarities = []
     recommend_works = []
@@ -53,17 +48,17 @@ def answer_to_list(answer):
     lines = answer.split('\n')
     lines = [i for i in lines if i != '']
 
-    # 共通点とおすすめのアニメのセクションの開始と終了のインデックスを見つける
+    # 共通点とおすすめの作品のセクションの開始と終了のインデックスを見つける
     start_index_similarities = lines.index("【共通点】") + 1
-    end_index_similarities = lines.index("【おすすめのアニメ】")
-    start_index_recommend = lines.index("【おすすめのアニメ】") + 1
+    end_index_similarities = lines.index(f"【おすすめの{genre}】")
+    start_index_recommend = lines.index(f"【おすすめの{genre}】") + 1
 
     # 共通点を抽出する
     for i in range(start_index_similarities, end_index_similarities):
         similarity = lines[i].split(') ')[1]
         similarities.append(similarity)
 
-    # おすすめのアニメを抽出する
+    # おすすめの作品を抽出する
     for i in range(start_index_recommend, len(lines)-1, 2):
         recommend_work = [lines[i].strip(), lines[i+1].strip()]
         recommend_work[0] = recommend_work[0].split(') ')[1]
