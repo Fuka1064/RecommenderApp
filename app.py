@@ -9,7 +9,7 @@ PASSWORD = os.environ.get("PASSWORD")
 st.title('あなたへのおすすめ')
 st.write('\n\n')
 st.markdown('#### 0. 使い方')
-st.write('まずはジャンルを選択し、そのジャンルであなたが好きな作品をいくつか入力してください。')
+st.write('まずはジャンルを選択し、そのジャンルの中であなたが好きな作品をいくつか入力してください。')
 st.write('AIがそれらの共通点を考えたうえで他の作品を紹介してくれます。')
 st.write('ただし、入力によってはエラーになってしまったり、存在しない作品をおすすめされてしまったりすることがあります。')
 st.write('上記にご了承のうえでの使用をお願いします。')
@@ -52,6 +52,11 @@ with st.form(key='recommend_form'):
         st.write(f'選んだジャンル：{genre}')
         for i, work in enumerate(favorite_works):
             st.write(f'好きな{genre} {i+1}個目：『{work}』')
+        st.write('\n\n')
+        
+        st.caption('処理に数十秒かかったりエラーが発生したりする可能性があります。')
+        st.caption('エラーが発生した際はもう一度送信ボタンを押しなおしてください。')
+        st.caption('それでも解消しない場合はお手数ですがサイトを更新して初めからやり直してください。')
         st.write('\n\n')
         
         # 入力した値からGPTに投げる質問を作る
