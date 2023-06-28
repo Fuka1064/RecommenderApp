@@ -1,12 +1,23 @@
-def make_question(works):
+import os
+from dotenv import load_dotenv
+load_dotenv('.env') 
+API_KEY = os.environ.get("API_KEY")
+
+genre_to_eng = {'アニメ':'anime', 
+                '漫画':'comic', 
+                '小説':'novel', 
+                '映画':'movie', 
+                'ドラマ':'drama', }
+
+def make_question(genre, works):
     # 受け取った作品リストをもとに質問を作る
-    question = "Here are the titles of the anime I like:\n"
+    question = f"Here are the titles of the {genre_to_eng[genre]} I like:\n"
     for work in works:
         question += f"  『{work}』\n"
-    question += "\nPlease point out the characteristics common to the works listed above. Also, please recommend similar works that exhibit similar characteristics. As a reminder, please be sure to introduce actual works, even if they are difficult to guess.\n"
+    question += f"\nPlease point out the characteristics common to the {genre_to_eng[genre]}s listed above. Also, please recommend similar {genre_to_eng[genre]}s that exhibit similar characteristics. As a reminder, please be sure to introduce actual {genre_to_eng[genre]}s, even if they are difficult to guess.\n"
     question += "Please answer in Japanese according to the following format:\n\n"
     question += "【共通点】\n   (1) 共通点1\n   (2) 共通点2\n   (3) 共通点3\n\n"
-    question += "【おすすめのアニメ】\n"
+    question += f"【おすすめの{genre}】\n"
     for i in range(3):
         question += f"   ({i+1}) 「タイトル」\n       おすすめの理由\n"
 
