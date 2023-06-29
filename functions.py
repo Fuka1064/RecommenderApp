@@ -1,8 +1,7 @@
+import streamlit as st
 import openai
-import os
-from dotenv import load_dotenv
-load_dotenv('.env') 
-openai.api_key = os.environ.get("API_KEY")
+
+openai.api_key = st.secrets["AzureApiKey"]["API_KEY"]
 
 genre_to_eng = {'アニメ':'anime', 
                 '漫画':'comic', 
