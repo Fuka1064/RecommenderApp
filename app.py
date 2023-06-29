@@ -9,10 +9,10 @@ PASSWORD = os.environ.get("PASSWORD")
 st.title('あなたへのおすすめ')
 st.write('\n\n')
 st.markdown('#### 0. 使い方')
-st.write('まずはジャンルを選択し、そのジャンルの中であなたが好きな作品をいくつか入力してください。')
-st.write('AIがそれらの共通点を考えたうえで他の作品を紹介してくれます。')
+st.write('まずはジャンルを選択し、そのジャンルの中であなたが好きな作品を複数入力してください。')
+st.write('AIがそれらの共通点を考えた上で、他の作品を紹介してくれます。')
 st.write('ただし、入力によってはエラーになってしまったり、存在しない作品をおすすめされてしまったりすることがあります。')
-st.write('上記にご了承のうえでの使用をお願いします。')
+st.write('上記にご了承の上でのご使用をお願いします。')
 st.write('\n\n')
 
 # テキストボックスでパスワード入力を求める(簡易的なログイン)
@@ -32,18 +32,18 @@ genre = st.selectbox(
 )
 
 # スライダーで入力する作品の個数を決める
-num_fav_works = st.slider('入力したい作品の数を選んでください (最小で3個, 最大で10個)', 3, 10, 3)
+num_fav_works = st.slider('入力したい作品の個数を決めてください (最小で3個, 最大で10個)', 3, 10, 3)
 
 st.markdown(f'#### 3. あなたの好きな{genre}を入力してください')
 with st.form(key='recommend_form'):
-    # テキストボックスでユーザーに好きな作品の入力を求める
     favorite_works = []
     
+    # テキストボックスでユーザーに好きな作品の入力を求める
     for i in range(num_fav_works):
         favorite_works.append(st.text_input(f'好きな{genre} {i+1}個目', key=f'work{i+1}'))
     st.write('\n\n')
         
-    # スライダーで入力する作品の個数を決める
+    # スライダーで出力する作品の個数を決める
     num_recommend_works = st.slider(f'紹介して欲しい{genre}の個数を決めてください (最小で3個, 最大で10個)', 3, 10, 3)
 
     # 送信ボタン
@@ -59,7 +59,7 @@ with st.form(key='recommend_form'):
         st.write('\n\n')
         
         st.caption('処理に数十秒かかったりエラーが発生したりする可能性があります。')
-        st.caption('エラーが発生した際はもう一度送信ボタンを押しなおしてください。')
+        st.caption('エラーが発生した際はもう一度送信ボタンを押してください。')
         st.caption('それでも解消しない場合はお手数ですがサイトを更新して初めからやり直してください。')
         st.write('\n\n')
         
@@ -70,6 +70,7 @@ with st.form(key='recommend_form'):
         answer = ask_chatgpt(question)
         similarities, recommend_works = answer_to_list(genre, answer)
         
+        # 結果の表示
         st.markdown(f'### あなたが好きな{genre}の共通点')
         st.caption('注：虚偽の内容が含まれている場合があります。')
         st.write('\n')
