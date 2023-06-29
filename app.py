@@ -41,6 +41,10 @@ with st.form(key='recommend_form'):
     
     for i in range(num_fav_works):
         favorite_works.append(st.text_input(f'好きな{genre} {i+1}個目', key=f'work{i+1}'))
+    st.write('\n\n')
+        
+    # スライダーで入力する作品の個数を決める
+    num_recommend_works = st.slider(f'紹介して欲しい{genre}の個数を決めてください (最小で3個, 最大で10個)', 3, 10, 3)
 
     # 送信ボタン
     submit_btn = st.form_submit_button('送信')
@@ -60,13 +64,14 @@ with st.form(key='recommend_form'):
         st.write('\n\n')
         
         # 入力した値からGPTに投げる質問を作る
-        question = make_question(genre, favorite_works)
+        question = make_question(genre, favorite_works, num_recommend_works)
         
         # 得た答えを扱いやすいように加工する
         answer = ask_chatgpt(question)
         similarities, recommend_works = answer_to_list(genre, answer)
         
         st.markdown(f'### あなたが好きな{genre}の共通点')
+        st.caption('注：虚偽の内容が含まれている場合があります。')
         st.write('\n')
         for i, similarity in enumerate(similarities):
             st.markdown(f'##### 共通点{i+1}')
@@ -75,6 +80,7 @@ with st.form(key='recommend_form'):
         st.write('\n')
             
         st.write('### あなたへのおすすめ')
+        st.caption(f'注：虚偽の内容や存在しない{genre}が含まれている可能性があります。')
         st.write('\n')
         for i, work in enumerate(recommend_works):
             st.markdown(f'##### おすすめの{genre}{i+1}：{work[0]}')
