@@ -10,7 +10,7 @@ genre_to_eng = {'アニメ':'anime',
                 '映画':'movie', 
                 'ドラマ':'drama', }
 
-def make_question(genre, works):
+def make_question(genre, works, num_recommend_works):
     # 受け取った作品リストをもとに質問を作る
     question = f"Here are the titles of the {genre_to_eng[genre]} I like:\n"
     for work in works:
@@ -19,7 +19,7 @@ def make_question(genre, works):
     question += "Please answer in Japanese according to the following format:\n\n"
     question += "【共通点】\n   (1) 共通点1\n   (2) 共通点2\n   (3) 共通点3\n\n"
     question += f"【おすすめの{genre}】\n"
-    for i in range(3):
+    for i in range(num_recommend_works):
         question += f"   ({i+1}) 「タイトル」\n       おすすめの理由\n"
 
     return question
@@ -36,6 +36,10 @@ def ask_chatgpt(question):
             },
         ],
     )
+    
+    # デバッグ用
+    # print(answer)
+    # print(answer["choices"][0]["message"]["content"])
 
     return answer["choices"][0]["message"]["content"]
 
@@ -61,8 +65,12 @@ def answer_to_list(genre, answer):
     # おすすめの作品を抽出する
     for i in range(start_index_recommend, len(lines)-1, 2):
         recommend_work = [lines[i].strip(), lines[i+1].strip()]
-        recommend_work[0] = recommend_work[0].split(') ')[1]
-        recommend_work[1] = recommend_work[1].split('おすすめの理由: ')[1]
+        if ') ' in recommend_work[0]:
+            recommend_work[0] = recommend_work[0].split(') ')[1]
+        
+        if 'おすすめの理由' in recommend_work[1]:
+            recommend_work[1] = recommend_work[1].split('おすすめの理由')[1][1:]
+            
         recommend_works.append(recommend_work)
 
     return similarities, recommend_works
