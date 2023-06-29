@@ -1,7 +1,7 @@
 import streamlit as st
 from functions import make_question, ask_chatgpt, answer_to_list
 
-PASSWORD = st.secrets["AzureApiKey"]["PASSWORD"]
+PASSWORD = st.secrets["PASSWORD"]
 
 # タイトル及び説明文
 st.title('あなたへのおすすめ')

@@ -1,7 +1,7 @@
 import streamlit as st
 import openai
 
-openai.api_key = st.secrets["AzureApiKey"]["API_KEY"]
+openai.api_key = st.secrets["API_KEY"]
 
 genre_to_eng = {'アニメ':'anime', 
                 '漫画':'comic', 
