@@ -3,6 +3,7 @@
 # ビルドフォルダやキャッシュファイルなどを除外する
 _build/
 _pycache_/
+.streamlit/
 *.pyc
 test.py
 .env
