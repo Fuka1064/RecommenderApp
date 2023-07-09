@@ -19,7 +19,7 @@ password = st.text_input('パスワード：')
 if password == PASSWORD:
     st.text('認証に成功しました')
 elif password != '' and password != PASSWORD:
-    st.text('パスワードが違います')
+    st.error('パスワードが違います')
 st.write('\n\n')
 
 # セレクトボックスでジャンルを決める
@@ -87,7 +87,7 @@ with st.form(key='recommend_form'):
             st.write('\n')
     
     elif submit_btn and password != PASSWORD:
-        st.text('パスワードが違います')
+        st.error('パスワードが違います')
         
     elif submit_btn and '' in favorite_works:
-        st.text(f'好きな{genre}入力欄はすべて埋めてください')
+        st.error(f'好きな{genre}入力欄はすべて埋めてください')
